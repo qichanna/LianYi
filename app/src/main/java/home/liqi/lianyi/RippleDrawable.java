@@ -11,6 +11,8 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
+import android.view.MotionEvent;
 
 /**
  * Created by liqi on 2017/4/16.
@@ -35,6 +37,46 @@ public class RippleDrawable extends Drawable {
 //        setColorFilter(new LightingColorFilter(0xFFFF0000,0x00330000));
     }
 
+    public void onTouch(MotionEvent event){
+        mRippleRadius = mRippleRadius + 10;
+        invalidateSelf();
+
+        switch (event.getActionMasked()){
+            case MotionEvent.ACTION_DOWN:
+                    onTouchDown(event.getX(),event.getY());
+                break;
+            case MotionEvent.ACTION_MOVE:
+
+                break;
+            case MotionEvent.ACTION_UP:
+
+                break;
+            case MotionEvent.ACTION_CANCEL:
+
+                break;
+        }
+    }
+
+    private void onTouchDown(float x,float y){
+        Log.e("eee", "onTouchDown: ");
+        mRipplePointX = x;
+        mRipplePointY = y;
+        mRippleRadius = mRippleRadius + 20;
+        invalidateSelf();
+
+    }
+    private void onTouchMove(float x,float y){
+
+    }
+    private void onTouchUp(float x,float y){
+
+    }
+    private void onTouchCancel(float x,float y){
+
+    }
+
+
+
     public void setmRippleColor(int color){
         mRippleColor = color;
         onColorOrAlohaChange();
@@ -51,6 +93,7 @@ public class RippleDrawable extends Drawable {
             int realAlpha = (int) (pAlpha * (mAlpha / 255f));
             mPaint.setAlpha(realAlpha);
         }
+        invalidateSelf();
 
     }
 
@@ -59,8 +102,8 @@ public class RippleDrawable extends Drawable {
 //        canvas.drawColor(0x70FF0000);
 
         canvas.drawBitmap(bitmap,0,0,mPaint);
-
         canvas.drawCircle(mRipplePointX,mRipplePointY,mRippleRadius,mPaint);
+
     }
 
     @Override
@@ -79,6 +122,7 @@ public class RippleDrawable extends Drawable {
         if(mPaint.getColorFilter() != colorFilter){
             mPaint.setColorFilter(colorFilter);
         }
+        invalidateSelf();
 
     }
 
