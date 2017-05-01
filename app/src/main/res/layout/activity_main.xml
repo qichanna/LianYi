@@ -1,15 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="home.liqi.lianyi.MainActivity">
+    android:orientation="vertical">
     
     <home.liqi.lianyi.RippleButton
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_centerInParent="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="100dp"
         android:text="RippleButton" />
 
-</RelativeLayout>
+    <home.liqi.lianyi.RippleButton2
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginBottom="100dp"
+        android:text="RippleButton" />
+
+    <home.liqi.lianyi.RippleButton3
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_marginBottom="100dp"
+        android:text="RippleButton" />
+
+</LinearLayout>
