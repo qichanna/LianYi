@@ -80,7 +80,7 @@ public class RippleDrawable3 extends Drawable {
         if(mEnterDone){
             startExitRunnable();
         }
-//        unscheduleSelf(mEnterRunnable);
+        unscheduleSelf(mEnterRunnable);
     }
     private void onTouchCancel(float x,float y){
         //标识手抬起
@@ -179,7 +179,7 @@ public class RippleDrawable3 extends Drawable {
             mExitProgress = mExitProgress + mExitIncrement;
 
             if(mExitProgress > 1){
-                onEnterProgress(1);
+                onExitProgress(1);
                 onExitDone();
                 return;
             }
