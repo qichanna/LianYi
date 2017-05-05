@@ -21,7 +21,7 @@ import android.view.animation.Interpolator;
  * Created by liqi on 2017/4/16.
  */
 
-public class RippleDrawable3 extends Drawable {
+public class RippleDrawable4 extends Drawable {
 
     private int mAlpha = 200;
     private int mRippleColor = 0;
@@ -30,7 +30,7 @@ public class RippleDrawable3 extends Drawable {
     private float mRippleRadius = 0;
     private Bitmap bitmap;
 
-    public RippleDrawable3(Bitmap bitmap) {
+    public RippleDrawable4(Bitmap bitmap) {
         this.bitmap = bitmap;
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
@@ -47,17 +47,23 @@ public class RippleDrawable3 extends Drawable {
 
         switch (event.getActionMasked()){
             case MotionEvent.ACTION_DOWN:
-                mRippleRadius = 0;
+                if(mExitDone){
+                    Log.e("aaa", "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
+                    mRippleRadius = 0;
                     onTouchDown(event.getX(),event.getY());
+                }
                 break;
             case MotionEvent.ACTION_MOVE:
 
                 break;
             case MotionEvent.ACTION_UP:
-                onTouchUp(event.getX(),event.getY());
+                if(mExitDone && mEnterDone) {
+                    Log.e("aaa", "qqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
+                    onTouchUp(event.getX(), event.getY());
+                }
                 break;
             case MotionEvent.ACTION_CANCEL:
-                onTouchCancel(event.getX(),event.getY());
+
                 break;
         }
     }
@@ -95,9 +101,11 @@ public class RippleDrawable3 extends Drawable {
      * 启动进入动画
      */
     private void startEnterRunnable(){
+        Log.e("aaa", "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb: ");
         mPaintAlpha = 255;
         mEnterProgress = 0;
         mEnterDone = false;
+        unscheduleSelf(mExitRunnable);
         unscheduleSelf(mEnterRunnable);
         scheduleSelf(mEnterRunnable,SystemClock.uptimeMillis());
     }
@@ -107,12 +115,14 @@ public class RippleDrawable3 extends Drawable {
      */
     private void startExitRunnable(){
         mExitProgress = 0;
+        mExitDone = false;
         unscheduleSelf(mEnterRunnable);
         unscheduleSelf(mExitRunnable);
         scheduleSelf(mExitRunnable,SystemClock.uptimeMillis());
     }
 
     private boolean mEnterDone;
+    private boolean mExitDone = true;
     //进入动画进度值
     private float mEnterProgress = 0;
     //每次递增的进度值
@@ -150,7 +160,8 @@ public class RippleDrawable3 extends Drawable {
 
     //当退出动画完成时触发
     private void onExitDone(){
-
+        mRippleRadius = 0;
+        mExitDone = true;
     }
 
     /**
@@ -159,10 +170,12 @@ public class RippleDrawable3 extends Drawable {
      */
     private void onEnterProgress(float progress){
         mRippleRadius = getProgressValue(mStartRadius,mEndRadius,progress);
+        Log.e("aaa", "onEnterProgress: eeeeeeeeeeeeeeeeeeeeeee    "+mRippleRadius );
         mRipplePointX = getProgressValue(mDonePointX,mCenterPointX,progress);
         mRipplePointY = getProgressValue(mDonePointY,mCenterPointY,progress);
         int alpha = (int) getProgressValue(0,255,progress);
         mBackgroundColor = changeColorAlpha(0x30000000,alpha);
+        Log.e("aaa", "onEnterProgress: 1111111111111111111111111    "+mRippleRadius );
         invalidateSelf();
     }
 
@@ -200,6 +213,7 @@ public class RippleDrawable3 extends Drawable {
         int alpha = (int) getProgressValue(255,0,progress);
         mBackgroundColor = changeColorAlpha(0x30000000,alpha);
         mPaintAlpha = (int) getProgressValue(255,0,progress);
+        Log.e("aaa", "onEnterProgress: 22222222222222222222    "+mRippleRadius );
         invalidateSelf();
     }
 
@@ -266,6 +280,7 @@ public class RippleDrawable3 extends Drawable {
         canvas.drawColor(mBackgroundColor);
 //        canvas.drawBitmap(bitmap,0,0,mPaint);
         mPaint.setAlpha(mPaintAlpha);
+        Log.e("aaa", "mRippleRadius: "+ mRippleRadius + " alpha "+mPaintAlpha);
         canvas.drawCircle(mRipplePointX,mRipplePointY,mRippleRadius,mPaint);
 
     }
